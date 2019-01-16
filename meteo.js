@@ -61,6 +61,7 @@ function create_IDs(response) {
 
     latitude = response.coord.lat;
     longitude = response.coord.lon;
+    var description = response.weather[0].description;
     var humidite = response.main.humidity;
     var pression = response.main.pressure;
     var windDirection = response.wind.deg;
@@ -69,6 +70,7 @@ function create_IDs(response) {
     document.getElementById("meteo").innerHTML = "Temperature actuelle : " + temperature + " &#186;C";;
     document.getElementById("icon").src = openWeatherMapFolder + icon + ".png";
     
+    document.getElementById("description").innerHTML = "Temps " + description;
     document.getElementById("humidite").innerHTML = "Humidite : "+ humidite + " %";
     document.getElementById("latitude").innerHTML = "Latitude : " + latitude;
     document.getElementById("longitude").innerHTML = "Longitude : " + longitude;
@@ -91,14 +93,16 @@ function create_forecast_IDs(response) {
     var twoDaysDescription = response.list[prevision48h].weather[0].description;
     var threeDaysDescription = response.list[prevision72h].weather[0].description;
 
-    document.getElementById("oneDayTemp").innerHTML = "Temperature prevue demain : " + 
+    document.getElementById("oneDayTemp").innerHTML = "Temperature prevue dans 24 heures : " + 
                                                               oneDayTemp + " &#186;C";
-    document.getElementById("twoDaysTemp").innerHTML = "Temperature prevue apres-demain : " + 
+    document.getElementById("twoDaysTemp").innerHTML = "Temperature prevue dans 48 heures : " + 
                                                               twoDaysTemp + " &#186;C";
-    document.getElementById("threeDaysTemp").innerHTML = "Temperature prevue dans deux jours : " + 
+    document.getElementById("threeDaysTemp").innerHTML = "Temperature prevue dans 72 heures : " + 
                                                                 threeDaysTemp + " &#186;C";
 
-    //document.getElementById("icon").src = openWeatherMapFolder + icon + ".png";
+    document.getElementById("oneDayIcon").src = openWeatherMapFolder + oneDayIcon + ".png";
+    document.getElementById("twoDaysIcon").src = openWeatherMapFolder + twoDaysIcon + ".png";
+    document.getElementById("threeDaysIcon").src = openWeatherMapFolder + threeDaysIcon + ".png";
 
     document.getElementById("oneDayDescription").innerHTML = oneDayDescription;
     document.getElementById("twoDaysDescription").innerHTML = twoDaysDescription;

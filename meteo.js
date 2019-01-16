@@ -1,10 +1,13 @@
-var xhr = new XMLHttpRequest();
+var xmlDataRequest = new XMLHttpRequest();
+var xmlForecastDataRequest = new XMLHttpRequest();
+
 
 // Forme générale du lien :
 // http://maps.openweathermap.org/maps/2.0/weather/TA2/{z}/{x}/{y}?
 // date=1527811200&opacity=0.9&fill_bound=true&appid={api_key}
 
 var base_url = "http://api.openweathermap.org/data/2.5/weather";
+var forecast_url = "http://api.openweathermap.org/data/2.5/forecast";
 var city = "Metz";
 var appid = "a2dc86b24fafbb885f09aaec75f00c65";
 //3c084bd74c2f77f02d6d6c30c2018bf0
@@ -15,15 +18,30 @@ var appid = "a2dc86b24fafbb885f09aaec75f00c65";
 
 var units = "metric";
 var openWeatherMapFolder = "http://openweathermap.org/img/w/";
+var langue = "fr";
 
 var previousCity;
 var ville;
+
+ // calcul des index pour les previsions, sur une base d'un releve toutes les 3 heures
+var prevision24h = (24 / 3) - 1;
+var prevision48h = (48 / 3) - 1;
+var prevision72h = (72 / 3) - 1;
 
 function get_url() {
     return base_url + "?"
         + "q=" + city + "&"
         + "appid=" + appid + "&"
-        + "units=" + units;
+        + "units=" + units + "&"
+        + "lang=" + langue;
+}
+
+function get_forecast_url() {
+    return forecast_url + "?"
+        + "q=" + city + "&"
+        + "appid=" + appid + "&"
+        + "units=" + units + "&"
+        + "lang=" + langue;
 }
 
 function  windDirectionToString(degree){
@@ -38,17 +56,17 @@ function  windDirectionToString(degree){
 }
 
 function create_IDs(response) {
-    var temperature = response.main.temp;
+    var temperature = Math.round(response.main.temp);
     var icon = response.weather[0].icon;
 
-    var humidite = response.main.humidity;
     latitude = response.coord.lat;
     longitude = response.coord.lon;
+    var humidite = response.main.humidity;
     var pression = response.main.pressure;
     var windDirection = response.wind.deg;
-    var windSpeed = response.wind.speed * 3.6; // *3.6 pour passer de m/s en km/h
+    var windSpeed = Math.round(response.wind.speed * 3.6); // *3.6 pour passer de m/s en km/h
 
-    document.getElementById("meteo").innerHTML = temperature;
+    document.getElementById("meteo").innerHTML = "Temperature actuelle : " + temperature + " &#186;C";;
     document.getElementById("icon").src = openWeatherMapFolder + icon + ".png";
     
     document.getElementById("humidite").innerHTML = "Humidite : "+ humidite + " %";
@@ -59,17 +77,47 @@ function create_IDs(response) {
     document.getElementById("windSpeed").innerHTML = "Vitesse du vent : " + windSpeed + " km/h";
 }
 
+function create_forecast_IDs(response) {
+     // la temperature sur 3 jours
+    var oneDayTemp = Math.round(response.list[prevision24h].main.temp); // 7 = (24h / 3h) - 1
+    var twoDaysTemp = Math.round(response.list[prevision48h].main.temp); // 15 = (48h / 3h) - 1
+    var threeDaysTemp = Math.round(response.list[prevision72h].main.temp); // 23 = (72h / 3h) - 1
+     // icones du temps sur trois jours
+    var oneDayIcon = response.list[prevision24h].weather[0].icon;
+    var twoDaysIcon = response.list[prevision48h].weather[0].icon;
+    var threeDaysIcon = response.list[prevision72h].weather[0].icon;
+     // descriptions
+    var oneDayDescription = response.list[prevision24h].weather[0].description;
+    var twoDaysDescription = response.list[prevision48h].weather[0].description;
+    var threeDaysDescription = response.list[prevision72h].weather[0].description;
+
+    document.getElementById("oneDayTemp").innerHTML = "Temperature prevue demain : " + 
+                                                              oneDayTemp + " &#186;C";
+    document.getElementById("twoDaysTemp").innerHTML = "Temperature prevue apres-demain : " + 
+                                                              twoDaysTemp + " &#186;C";
+    document.getElementById("threeDaysTemp").innerHTML = "Temperature prevue dans deux jours : " + 
+                                                                threeDaysTemp + " &#186;C";
+
+    //document.getElementById("icon").src = openWeatherMapFolder + icon + ".png";
+
+    document.getElementById("oneDayDescription").innerHTML = oneDayDescription;
+    document.getElementById("twoDaysDescription").innerHTML = twoDaysDescription;
+    document.getElementById("threeDaysDescription").innerHTML = threeDaysDescription;
+}
+
 function get_Data() {
     document.getElementById("cityName").innerHTML = city;
     
-    xhr.onreadystatechange = function() {
+    xmlDataRequest.onreadystatechange = function() {
         if (this.readyState == 4 & this.status == 200) {
             if (document.getElementById("url_visibility").checked) {
                 document.getElementById("url").style.display = "block";
+                document.getElementById("forecast_url").style.display = "block";
 
             }
             else {
                 document.getElementById("url").style.display = "none";
+                document.getElementById("forecast_url").style.display = "none";
             }
 
             document.getElementById("url").innerHTML = get_url();
@@ -78,13 +126,27 @@ function get_Data() {
         }
     };
 
-    xhr.open("GET", get_url(), true);
-    xhr.send();
+    xmlDataRequest.open("GET", get_url(), true);
+    xmlDataRequest.send();
+}
+
+function get_forecast_Data() {
+    xmlForecastDataRequest.onreadystatechange = function() {
+        if (this.readyState == 4 & this.status == 200) {
+            document.getElementById("forecast_url").innerHTML = get_forecast_url();
+
+            create_forecast_IDs(JSON.parse(this.responseText));
+        }
+    };
+
+    xmlForecastDataRequest.open("GET", get_forecast_url(), true);
+    xmlForecastDataRequest.send();
 }
 
 function init_page() {
     previousCity = city; // memorisation de la derniere ville consultee
     get_Data();
+    get_forecast_Data();
 }
 
 function get_temperature() {

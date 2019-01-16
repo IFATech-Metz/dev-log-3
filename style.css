@@ -1,0 +1,14 @@
+#url {
+    color: red;
+    display: none;
+}
+
+#url_UV {
+    color: red;
+    display: none;
+}
+
+#meteo {
+    color: white;
+    background: black;
+}

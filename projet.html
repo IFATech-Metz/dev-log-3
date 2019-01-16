@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
     <head>
         <title>Météo du jour</title>
@@ -7,8 +6,44 @@
     </head>
     <body onload="init_page()">
         <h1>Application M&eacute;t&eacute;o</h1>
+        <p>
+            Nom de la ville :
+            <input type="text" id="ville" value="">
+            <br>
+            <button title="button" onclick="get_temperature()">Envoyer</button>
+            <input type="checkbox" id="url_visibility" checked>
+        </p>
+        <p>
+            Donnees de la ville de <span id="cityName"></span>
+        </p>
+        <div id="url">
+            <br>
+        </div>
+        <div id="url_UV">
+            <br>
+        </div>
         <div id="meteo">
 
+        </div>
+
+        <img id="icon" src="">
+        <div id="pression">
+
+        </div>
+        <div id="humidite">
+
+        </div>
+        <div id="latitude">
+
+        </div>
+        <div id="longitude">
+            
+        </div>
+        <div id="windDirection">
+
+        </div>
+        <div id="windSpeed">
+            
         </div>
     </body>
 </html>

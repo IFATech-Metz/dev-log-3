@@ -67,11 +67,11 @@ function create_IDs(response) {
     var windDirection = response.wind.deg;
     var windSpeed = Math.round(response.wind.speed * 3.6); // *3.6 pour passer de m/s en km/h
 
-    document.getElementById("meteo").innerHTML = "Temperature actuelle : " + temperature + " &#186;C";;
+    document.getElementById("meteo").innerHTML = "Temp&eacute;rature actuelle : " + temperature + " &#186;C";;
     document.getElementById("icon").src = openWeatherMapFolder + icon + ".png";
     
-    document.getElementById("description").innerHTML = "Temps " + description;
-    document.getElementById("humidite").innerHTML = "Humidite : "+ humidite + " %";
+    document.getElementById("description").innerHTML = description;
+    document.getElementById("humidite").innerHTML = "Humidit&eacute; : "+ humidite + " %";
     document.getElementById("latitude").innerHTML = "Latitude : " + latitude;
     document.getElementById("longitude").innerHTML = "Longitude : " + longitude;
     document.getElementById("pression").innerHTML = "Pression : " + pression + " hPa";
@@ -93,11 +93,11 @@ function create_forecast_IDs(response) {
     var twoDaysDescription = response.list[prevision48h].weather[0].description;
     var threeDaysDescription = response.list[prevision72h].weather[0].description;
 
-    document.getElementById("oneDayTemp").innerHTML = "Temperature prevue dans 24 heures : " + 
+    document.getElementById("oneDayTemp").innerHTML = "Temp&eacute;rature pr&eacute;vue dans 24 heures : " + 
                                                               oneDayTemp + " &#186;C";
-    document.getElementById("twoDaysTemp").innerHTML = "Temperature prevue dans 48 heures : " + 
+    document.getElementById("twoDaysTemp").innerHTML = "Temp&eacute;rature pr&eacute;vue dans 48 heures : " + 
                                                               twoDaysTemp + " &#186;C";
-    document.getElementById("threeDaysTemp").innerHTML = "Temperature prevue dans 72 heures : " + 
+    document.getElementById("threeDaysTemp").innerHTML = "Temp&eacute;rature pr&eacute;vue dans 72 heures : " + 
                                                                 threeDaysTemp + " &#186;C";
 
     document.getElementById("oneDayIcon").src = openWeatherMapFolder + oneDayIcon + ".png";

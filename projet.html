@@ -10,21 +10,26 @@
             Nom de la ville :
             <input type="text" id="ville" value="">
             <br>
-            <button title="button" onclick="get_temperature()">Envoyer</button>
-            <input type="checkbox" id="url_visibility">
+            <button title="button" onclick="get_City_Data()">Envoyer</button>
+            <input type="checkbox" id="url_visibility" checked>
         </p>
-        <div id="debug">
+        
+        <div id="debug">            
         </div>
+
         <p>
             Pr&eacute;visions pour la ville de <span id="cityName"></span>
         </p>
         <div id="url">
             <br>
         </div>
-
         <div id="forecast_url">
             <br>
         </div>
+        <div id="uv_url">
+            <br>
+        </div>
+
         <br>
         <table>
             <tr>
@@ -49,6 +54,7 @@
 
         <div id="windDirection"></div>
         <div id="windSpeed"></div>
+        <div id="uv"></div>
         <br>
         <table>
             <tr>

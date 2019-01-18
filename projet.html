@@ -1,7 +1,8 @@
-<!DOCTYPE html>
 <html>
     <head>
+
         <title>Météo Time </title>
+
         <script src="meteo.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>
@@ -10,17 +11,94 @@
 
         <p>
             Nom de la ville :
-            <input type="text" id="ville" value=""><br>
-            <button type="button" onclick="get_temperature()" >Envoyer</button>
-            <input type="checkbox" id="url_visibility">
+            <input type="text" id="ville" value="">
+            <br>
+            <button title="button" onclick="get_City_Data()">Envoyer</button>
+            <input type="checkbox" id="url_visibility" checked>
         </p>
-
+        
+        <div id="debug">            
+        </div>
+      
+        <p>
+            Pr&eacute;visions pour la ville de <span id="cityName"></span>
+        </p>
         <div id="url">
-
+            <br>
         </div>
-        <div id="meteo">
-
+        <div id="forecast_url">
+            <br>
         </div>
-        <img id="icon" src="">
+
+        <div id="uv_url">
+            <br>
+        </div>
+
+        <br>
+        <table>
+            <tr>
+                <td>
+                    <span id="meteo"></span>
+                </td>
+                <td>
+                    <img id="icon" src="">
+                </td>
+                <td>
+                    <span id="description"></span>
+                </td>
+            </tr>
+        </table>
+        <div id="description"></div>
+
+        <div id="pression"></div>
+        <div id="humidite"></div>
+
+        <div id="latitude"></div>
+        <div id="longitude"></div>
+
+        <div id="windDirection"></div>
+        <div id="windSpeed"></div>
+        <div id="uv"></div>
+        <br>
+        <table>
+            <tr>
+                <td>
+                    <span id="oneDayTemp"></span>
+                </td>
+                <td>
+                    <img id="oneDayIcon" src="">
+                </td>
+                <td>
+                    <span id="oneDayDescription"></span>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <span id="twoDaysTemp"></span>
+                </td>
+                <td>
+                    <img id="twoDaysIcon" src="">
+                </td>
+                <td>
+                    <span id="twoDaysDescription"></span>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <span id="threeDaysTemp"></span>
+                </td>
+                <td>
+                    <img id="threeDaysIcon" src="">
+                </td>
+                <td>
+                    <span id="threeDaysDescription"></span>
+                </td>
+            </tr>
+        </table>
+
     </body>
 </html>

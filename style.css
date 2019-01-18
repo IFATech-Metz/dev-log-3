@@ -1,8 +1,15 @@
-#url{
+
+#url {
     color: red;
-     display: none;
+    display: none;
 }
-#meteo{
-    background-color: blue;
+
+#url_UV {
+    color: red;
+    display: none;
+}
+
+#meteo {
+    color: black;
 
 }

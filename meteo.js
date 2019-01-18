@@ -1,5 +1,6 @@
 var xmlDataRequest = new XMLHttpRequest();
 var xmlForecastDataRequest = new XMLHttpRequest();
+var xmlUVDataRequest = new XMLHttpRequest();
 
 
 // Forme générale du lien :
@@ -8,6 +9,7 @@ var xmlForecastDataRequest = new XMLHttpRequest();
 
 var base_url = "http://api.openweathermap.org/data/2.5/weather";
 var forecast_url = "http://api.openweathermap.org/data/2.5/forecast";
+var uv_url = "http://api.openweathermap.org/data/2.5/uvi";
 var city = "Metz";
 var appid = "a2dc86b24fafbb885f09aaec75f00c65";
 //3c084bd74c2f77f02d6d6c30c2018bf0
@@ -19,14 +21,18 @@ var appid = "a2dc86b24fafbb885f09aaec75f00c65";
 var units = "metric";
 var openWeatherMapFolder = "http://openweathermap.org/img/w/";
 var langue = "fr";
+var latitude = 49.12;
+var longitude = 6.18;
 
-var previousCity;
+var previousCity = city;
 var ville;
 
  // calcul des index pour les previsions, sur une base d'un releve toutes les 3 heures
 var prevision24h = (24 / 3) - 1;
 var prevision48h = (48 / 3) - 1;
 var prevision72h = (72 / 3) - 1;
+
+var debugID = "debug";
 
 function get_url() {
     return base_url + "?"
@@ -44,6 +50,13 @@ function get_forecast_url() {
         + "lang=" + langue;
 }
 
+function get_UV_url() {
+    return uv_url + "?"
+        + "appid=" + appid + "&"
+        + "lat=" + latitude + "&"
+        + "lon=" + longitude;
+}
+
 function  windDirectionToString(degree){
     if (degree>337.5) return 'Nord';
     if (degree>292.5) return 'Nord Ouest';
@@ -53,6 +66,14 @@ function  windDirectionToString(degree){
     if(degree>122.5) return 'Sud Est';
     if(degree>67.5) return 'Est';
     return 'Nord Est';
+}
+
+function cityNotFound(status) {
+    if ( status >= 300 ) {
+         // une erreur est survenue lors de la connexion au serveur
+        document.getElementById(debugID).style.display = "block";
+        document.getElementById(debugID).innerHTML = "Erreur de connexion au serveur : erreur " + status;
+    }
 }
 
 function create_IDs(response) {
@@ -77,14 +98,6 @@ function create_IDs(response) {
     document.getElementById("pression").innerHTML = "Pression : " + pression + " hPa";
     document.getElementById("windDirection").innerHTML = "Direction du vent : " + windDirectionToString(windDirection);
     document.getElementById("windSpeed").innerHTML = "Vitesse du vent : " + windSpeed + " km/h";
-}
-
-function cityNotFound(status) {
-    if ( status >= 300 ) {
-         // une erreur est survenue lors de la connexion au serveur
-        document.getElementById("debug").style.display = "block";
-        document.getElementById("debug").innerHTML = "Erreur de connexion au serveur : erreur " + status;
-    }
 }
 
 function create_forecast_IDs(response) {
@@ -117,25 +130,20 @@ function create_forecast_IDs(response) {
     document.getElementById("threeDaysDescription").innerHTML = threeDaysDescription;
 }
 
+function create_UV_IDs(response) {
+    document.getElementById("uv").innerHTML = "Taux d'Ultra-Violets : " + response.value;
+}
+
 function get_currentDay_Data() {
     document.getElementById("cityName").innerHTML = city;
     document.getElementById("debug").style.display = "none";
     
     xmlDataRequest.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            if (document.getElementById("url_visibility").checked) {
-                document.getElementById("url").style.display = "block";
-                document.getElementById("forecast_url").style.display = "block";
-
-            }
-            else {
-                document.getElementById("url").style.display = "none";
-                document.getElementById("forecast_url").style.display = "none";
-            }
-
             document.getElementById("url").innerHTML = get_url();
 
             create_IDs(JSON.parse(this.responseText));
+            get_UV_Data();
         }
         else {
              // cas où la ville n'est pas trouvée
@@ -166,25 +174,56 @@ function get_forecast_Data() {
     xmlForecastDataRequest.send();
 }
 
+function get_UV_Data() {
+    document.getElementById("debug").style.display = "none";
+
+    xmlUVDataRequest.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("uv_url").innerHTML = get_UV_url();
+
+            create_UV_IDs(JSON.parse(this.responseText));
+        }
+        else {
+             // cas où la ville n'est pas trouvée
+            cityNotFound(this.status);
+        }
+    };
+
+    xmlUVDataRequest.open("GET", get_UV_url(), true);
+    xmlUVDataRequest.send();
+}
+
 function get_Data() {
+    if (document.getElementById("url_visibility").checked)
+    {
+        document.getElementById("url").style.display = "block";
+        document.getElementById("forecast_url").style.display = "block";
+        document.getElementById("uv_url").style.display = "block";
+
+    }
+    else {
+        document.getElementById("url").style.display = "none";
+        document.getElementById("forecast_url").style.display = "none";
+        document.getElementById("uv_url").style.display = "none";
+    }
+
     get_currentDay_Data();
     get_forecast_Data();
 }
 
 function init_page() {
-    previousCity = city; // memorisation de la derniere ville consultee
     get_Data();
 }
 
-function get_temperature() {
+function get_City_Data() {
     city = document.getElementById("ville").value;
 
-    if (city != "") {
-        previousCity = city;
+    if (city == "") {
+         // aucun nom de ville, on utilise le dernier nom de ville utilise
+        city = previousCity;
     }
     else {
-        // aucun nom de ville, on utilise le dernier nom de ville utilise
-        city = previousCity;
+        previousCity = city;
     }
     get_Data();
 }

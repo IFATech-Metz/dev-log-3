@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Météo du jour</title>
+        <title>Météo Time </title>
         <script src="meteo.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body onload="init_page()">
         <h1>Application M&eacute;t&eacute;o</h1>
+
+        <p>
+            Nom de la ville :
+            <input type="text" id="ville" value=""><br>
+            <button type="button" onclick="get_temperature()" >Envoyer</button>
+            <input type="checkbox" id="url_visibility">
+        </p>
+
+        <div id="url">
+
+        </div>
         <div id="meteo">
 
         </div>
+        <img id="icon" src="">
     </body>
 </html>

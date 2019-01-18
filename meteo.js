@@ -67,7 +67,7 @@ function create_IDs(response) {
     var windDirection = response.wind.deg;
     var windSpeed = Math.round(response.wind.speed * 3.6); // *3.6 pour passer de m/s en km/h
 
-    document.getElementById("meteo").innerHTML = "Temp&eacute;rature actuelle : " + temperature + " &#186;C";;
+    document.getElementById("meteo").innerHTML = "Temp&eacute;rature actuelle : " + temperature + " &#186;C";
     document.getElementById("icon").src = openWeatherMapFolder + icon + ".png";
     
     document.getElementById("description").innerHTML = description;
@@ -77,6 +77,14 @@ function create_IDs(response) {
     document.getElementById("pression").innerHTML = "Pression : " + pression + " hPa";
     document.getElementById("windDirection").innerHTML = "Direction du vent : " + windDirectionToString(windDirection);
     document.getElementById("windSpeed").innerHTML = "Vitesse du vent : " + windSpeed + " km/h";
+}
+
+function cityNotFound(status) {
+    if ( status >= 300 ) {
+         // une erreur est survenue lors de la connexion au serveur
+        document.getElementById("debug").style.display = "block";
+        document.getElementById("debug").innerHTML = "Erreur de connexion au serveur : erreur " + status;
+    }
 }
 
 function create_forecast_IDs(response) {
@@ -109,11 +117,12 @@ function create_forecast_IDs(response) {
     document.getElementById("threeDaysDescription").innerHTML = threeDaysDescription;
 }
 
-function get_Data() {
+function get_currentDay_Data() {
     document.getElementById("cityName").innerHTML = city;
+    document.getElementById("debug").style.display = "none";
     
     xmlDataRequest.onreadystatechange = function() {
-        if (this.readyState == 4 & this.status == 200) {
+        if (this.readyState == 4 && this.status == 200) {
             if (document.getElementById("url_visibility").checked) {
                 document.getElementById("url").style.display = "block";
                 document.getElementById("forecast_url").style.display = "block";
@@ -128,6 +137,10 @@ function get_Data() {
 
             create_IDs(JSON.parse(this.responseText));
         }
+        else {
+             // cas où la ville n'est pas trouvée
+            cityNotFound(this.status);
+        }
     };
 
     xmlDataRequest.open("GET", get_url(), true);
@@ -135,11 +148,17 @@ function get_Data() {
 }
 
 function get_forecast_Data() {
+    document.getElementById("debug").style.display = "none";
+
     xmlForecastDataRequest.onreadystatechange = function() {
-        if (this.readyState == 4 & this.status == 200) {
+        if (this.readyState == 4 && this.status == 200) {
             document.getElementById("forecast_url").innerHTML = get_forecast_url();
 
             create_forecast_IDs(JSON.parse(this.responseText));
+        }
+        else {
+             // cas où la ville n'est pas trouvée
+            cityNotFound(this.status);
         }
     };
 
@@ -147,10 +166,14 @@ function get_forecast_Data() {
     xmlForecastDataRequest.send();
 }
 
+function get_Data() {
+    get_currentDay_Data();
+    get_forecast_Data();
+}
+
 function init_page() {
     previousCity = city; // memorisation de la derniere ville consultee
     get_Data();
-    get_forecast_Data();
 }
 
 function get_temperature() {

@@ -15,8 +15,9 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-// Forme générale du lien :
-// http://api.openweathermap.org/data/2.5/weather?q=Metz&3c084bd74c2f77f02d6d6c30c2018bf0
+var xmlDataRequest = new XMLHttpRequest();
+var xmlForecastDataRequest = new XMLHttpRequest();
+var xmlUVDataRequest = new XMLHttpRequest();
 
  // url général
 var base_url = "http://api.openweathermap.org/data/2.5/weather";
@@ -26,26 +27,37 @@ var forecast_url = "http://api.openweathermap.org/data/2.5/forecast";
 var uv_url = "http://api.openweathermap.org/data/2.5/uvi";
  // url des icônes météorologiques
 var openWeatherMapFolder = "http://openweathermap.org/img/w/";
-// url des pays 
-var  
 
 var city = "Metz";
+var appid = "a2dc86b24fafbb885f09aaec75f00c65";
+//3c084bd74c2f77f02d6d6c30c2018bf0
+//f5e810531af1756846022c6f387acf25
+//348e43383864ecfba8b0827cc402f3ff
+//2956ff49de9d7e9faa3cc83cc4805ee8
+//a2dc86b24fafbb885f09aaec75f00c65
+
 var units = "metric";
-var appid = "3c084bd74c2f77f02d6d6c30c2018bf0";
-var current_date = new Date();
+var langue = "fr";
+var latitude = 49.12;
+var longitude = 6.18;
 
-var year = current_date.getFullYear();
-var month = current_date.getMonth() + 1;
-var day = current_date.getDate();
+var previousCity = city;
+var ville;
 
-var day_now = day + "/" + month + "/" + year;
+ // calcul des index pour les previsions, sur une base d'un releve toutes les 3 heures
+var prevision24h = (24 / 3) - 1;
+var prevision48h = (48 / 3) - 1;
+var prevision72h = (72 / 3) - 1;
+
+var debugID = "debug";
 
  // création de l'url météo
 function get_url() {
     return base_url + "?"
         + "q=" + city + "&"
+        + "appid=" + appid + "&"
         + "units=" + units + "&"
-        + "appid=" + appid;
+        + "lang=" + langue;
 }
 
  // création de l'url des prévisions
@@ -160,47 +172,100 @@ function get_currentDay_Data() {
         if (this.readyState == 4 && this.status == 200) {
             document.getElementById("url").innerHTML = get_url();
 
-            var response = JSON.parse(this.responseText);
-            var temperature = response.main.temp;
+            create_IDs(JSON.parse(this.responseText));
 
-            var icon = response.weather[0].icon;
-            var src = "http://openweathermap.org/img/w/" + icon + ".png";
-
-            document.getElementById("meteo").innerHTML = temperature;
-            document.getElementById("icon").src = src;
+             // la recherche du taux d'UV ne peut se faire que lorsque la récupération des données
+             // du jour est terminée
+            get_UV_Data();
+        }
+        else {
+             // cas où la ville n'est pas trouvée
+            cityNotFound(this.status);
         }
     };
-    
-    xhr.open("GET", get_url(), true);
-    xhr.send();
+
+    xmlDataRequest.open("GET", get_url(), true);
+    xmlDataRequest.send();
 }
 
-function get_temperature() {
-    city = document.getElementById("ville").value;
+ // requête de récupération des données sur 3 jours
+function get_forecast_Data() {
+    document.getElementById("debug").style.display = "none";
 
-    xhr.onreadystatechange = function() {
+    xmlForecastDataRequest.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("url").innerHTML = get_url();
+            document.getElementById("forecast_url").innerHTML = get_forecast_url();
 
-            if(document.getElementById("url_visibility").checked) {
-                document.getElementById("url").style.display = "block";
-            }
-            else {
-                document.getElementById("url").style.display = "none";
-            }
-
-            var response = JSON.parse(this.responseText);
-            var temperature = response.main.temp;
-
-            var icon = response.weather[0].icon;
-            var src = "http://openweathermap.org/img/w/" + icon + ".png";
-            
-            document.getElementById("meteo").innerHTML = temperature;
-            document.getElementById("icon").src = src;
-
+            create_forecast_IDs(JSON.parse(this.responseText));
+        }
+        else {
+             // cas où la ville n'est pas trouvée
+            cityNotFound(this.status);
         }
     };
-    
-    xhr.open("GET", get_url(), true);
-    xhr.send();
+
+    xmlForecastDataRequest.open("GET", get_forecast_url(), true);
+    xmlForecastDataRequest.send();
+}
+
+ // requête de récupération des données du taux UV
+function get_UV_Data() {
+    document.getElementById("debug").style.display = "none";
+
+    xmlUVDataRequest.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("uv_url").innerHTML = get_UV_url();
+
+            create_UV_IDs(JSON.parse(this.responseText));
+        }
+        else {
+             // cas où la ville n'est pas trouvée
+            cityNotFound(this.status);
+        }
+    };
+
+    xmlUVDataRequest.open("GET", get_UV_url(), true);
+    xmlUVDataRequest.send();
+}
+
+ // récupération des données
+function get_Data() {
+     // si le checkbox visibility est coché
+    if (document.getElementById("url_visibility").checked)
+    {
+        document.getElementById("url").style.display = "block";
+        document.getElementById("forecast_url").style.display = "block";
+        document.getElementById("uv_url").style.display = "block";
+
+    }
+     // sinon...
+    else {
+        document.getElementById("url").style.display = "none";
+        document.getElementById("forecast_url").style.display = "none";
+        document.getElementById("uv_url").style.display = "none";
+    }
+
+    get_currentDay_Data();
+    get_forecast_Data();
+}
+
+ // initialisation de la page
+function init_page() {
+    get_Data();
+}
+
+ // récupération des données
+function get_City_Data() {
+    city = document.getElementById("ville").value;
+
+     // test pour vérifier qu'un nom de ville a bien été entré en paramètres
+    if (city == "") {
+         // aucun nom de ville, on utilise le dernier nom de ville utilise
+        city = previousCity;
+    }
+    else {
+        previousCity = city;
+    }
+
+    get_Data();
 }

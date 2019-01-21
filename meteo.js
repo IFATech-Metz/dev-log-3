@@ -27,7 +27,7 @@ var uv_url = "http://api.openweathermap.org/data/2.5/uvi";
  // url des icônes météorologiques
 var openWeatherMapFolder = "http://openweathermap.org/img/w/";
 // url des pays 
-var 
+var  
 
 var city = "Metz";
 var units = "metric";

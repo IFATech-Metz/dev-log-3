@@ -115,16 +115,35 @@ function create_IDs(response) {
     document.getElementById("description").innerHTML = description;
 
     var humidite = response.main.humidity;
-    document.getElementById("humidite").innerHTML = "Humidit&eacute; : "+ humidite + " %";
+    document.getElementById("humidite").innerHTML = "Taux d'humidit&eacute; : "+ humidite + " %";
 
     var pression = response.main.pressure;
-    document.getElementById("pression").innerHTML = "Pression : " + pression + " hPa";
+    document.getElementById("pression").innerHTML = "Pression atmosph&eacute;rique: " + pression + " hPa";
 
     var windDirection = response.wind.deg;
     document.getElementById("windDirection").innerHTML = "Direction du vent : " + windDirectionToString(windDirection);
     
     var windSpeed = Math.round(response.wind.speed * 3.6); // *3.6 pour passer de m/s en km/h
     document.getElementById("windSpeed").innerHTML = "Vitesse du vent : " + windSpeed + " km/h";
+
+    var cloudPercent = response.clouds.all;
+    document.getElementById("cloudPercent").innerHTML = "Couverture nuageuse : " + cloudPercent + " %";
+
+     // Heure de lever du soleil, au format Unix-Time, converti en millisecondes
+    var formattedTime;
+    var unixTime = new Date(response.sys.sunrise*1000);
+    var hours = unixTime.getHours();
+    var minutes = "0" + unixTime.getMinutes();
+    var seconds = "0" + unixTime.getSeconds();
+    formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    document.getElementById("sunrise").innerHTML = "Heure de lever du soleil : " + formattedTime;
+
+    var unixTime = new Date(response.sys.sunset*1000);
+    var hours = unixTime.getHours();
+    var minutes = "0" + unixTime.getMinutes();
+    var seconds = "0" + unixTime.getSeconds();
+    formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    document.getElementById("sunset").innerHTML = "Heure de coucher du soleil : " + formattedTime;
 }
 
  // création des ID html des prévisions sur 3 jours

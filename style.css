@@ -1,15 +1,13 @@
-
-#url {
-    color: red;
+#url{
+    font-family: verdana;
+    font-size: 20px;
+    color: blue; 
     display: none;
 }
 
-#url_UV {
-    color: red;
-    display: none;
+#meteo{
+    background: black;
+    color: white;
 }
 
-#meteo {
-    color: black;
 
-}

@@ -32,7 +32,7 @@ var uv_url = "http://api.openweathermap.org/data/2.5/uvi";
 var openWeatherMapFolder = "http://openweathermap.org/img/w/";
 
 var city = "Metz";
- b-ana
+
 var units = "metric";
 //var appid = "3c084bd74c2f77f02d6d6c30c2018bf0";
 

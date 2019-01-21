@@ -15,12 +15,9 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-// Forme générale du lien :
-// http://api.openweathermap.org/data/2.5/weather?q=Metz&3c084bd74c2f77f02d6d6c30c2018bf0
 var xmlDataRequest = new XMLHttpRequest();
 var xmlForecastDataRequest = new XMLHttpRequest();
 var xmlUVDataRequest = new XMLHttpRequest();
-
 
  // url général
 var base_url = "http://api.openweathermap.org/data/2.5/weather";
@@ -32,10 +29,6 @@ var uv_url = "http://api.openweathermap.org/data/2.5/uvi";
 var openWeatherMapFolder = "http://openweathermap.org/img/w/";
 
 var city = "Metz";
-
-var units = "metric";
-//var appid = "3c084bd74c2f77f02d6d6c30c2018bf0";
-
 var appid = "a2dc86b24fafbb885f09aaec75f00c65";
 //3c084bd74c2f77f02d6d6c30c2018bf0
 //f5e810531af1756846022c6f387acf25
@@ -58,14 +51,13 @@ var prevision72h = (72 / 3) - 1;
 
 var debugID = "debug";
 
-
  // création de l'url météo
 function get_url() {
     return base_url + "?"
         + "q=" + city + "&"
         + "appid=" + appid + "&"
         + "units=" + units + "&"
-
+        + "lang=" + langue;
 }
 
  // création de l'url des prévisions
@@ -198,50 +190,6 @@ function get_currentDay_Data() {
          // la requête est terminée
         if (this.readyState == 4 && this.status == 200) {
             document.getElementById("url").innerHTML = get_url();
- b-ana
-            var response = JSON.parse(this.responseText);
-            var temperature = response.main.temp;
-
-            var icon = response.weather[0].icon;
-            var src = "http://openweathermap.org/img/w/" + icon + ".png";
-
-            document.getElementById("meteo").innerHTML = temperature;
-            document.getElementById("icon").src = src;
-        }
-    };
-    
-    xhr.open("GET", get_url(), true);
-    xhr.send();
-}
-
-function get_temperature() {
-    city = document.getElementById("ville").value;
-
-    xhr.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("url").innerHTML = get_url();
-
-            if(document.getElementById("url_visibility").checked) {
-                document.getElementById("url").style.display = "block";
-            }
-            else {
-                document.getElementById("url").style.display = "none";
-            }
-
-            var response = JSON.parse(this.responseText);
-            var temperature = response.main.temp;
-
-            var icon = response.weather[0].icon;
-            var src = "http://openweathermap.org/img/w/" + icon + ".png";
-            
-            document.getElementById("meteo").innerHTML = temperature;
-            document.getElementById("icon").src = src;
-
-        }
-    };
-    
-    xhr.open("GET", get_url(), true);
-    xhr.send();
 
             create_IDs(JSON.parse(this.responseText));
 
@@ -339,6 +287,4 @@ function get_City_Data() {
     }
 
     get_Data();
-  
-  master
 }

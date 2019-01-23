@@ -1,11 +1,11 @@
 <html>
     <head>
-        <title>M&eacute;t&eacute;o du jour</title>
+        <title>Méteo time</title>
         <script src="meteo.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body onload="init_page()">
-        <h1>Application M&eacute;t&eacute;o</h1>
+        <h1>Météo time</h1>
         <p>
             Nom de la ville :
             <input type="text" id="ville" value="">
@@ -13,12 +13,14 @@
             <button title="button" onclick="get_City_Data()">Envoyer</button>
             <input type="checkbox" id="url_visibility" checked>
         </p>
-        
+    
+        <div id="day">
+        </div>
         <div id="debug">            
         </div>
-
+         
         <p>
-            Pr&eacute;visions pour la ville de <span id="cityName"></span>
+            Prévisions pour la ville de <span id="cityName"></span>
         </p>
         <div id="url">
             <br>

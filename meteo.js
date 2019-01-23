@@ -18,7 +18,8 @@
 var xmlDataRequest = new XMLHttpRequest();
 var xmlForecastDataRequest = new XMLHttpRequest();
 var xmlUVDataRequest = new XMLHttpRequest();
-
+//url avec pay et id pays
+var city_codeName="http://api.openweathermap.org/data/2.5/weather?q";
  // url général
 var base_url = "http://api.openweathermap.org/data/2.5/weather";
  // url des prévisions
@@ -28,8 +29,14 @@ var uv_url = "http://api.openweathermap.org/data/2.5/uvi";
  // url des icônes météorologiques
 var openWeatherMapFolder = "http://openweathermap.org/img/w/";
 
-var city = "Metz";
-var appid = "a2dc86b24fafbb885f09aaec75f00c65";
+/*var current_date = new date();
+var year = current_date.getFullYear();
+var Month= current_date.getMonth()+1;
+var day = current_date.getDate();
+var day= day+"/"+month+"/"+year;*/
+var country="France";
+var city ="Metz" ;
+var appid ="a2dc86b24fafbb885f09aaec75f00c65";
 //3c084bd74c2f77f02d6d6c30c2018bf0
 //f5e810531af1756846022c6f387acf25
 //348e43383864ecfba8b0827cc402f3ff
@@ -250,10 +257,15 @@ function get_Data() {
 }
 
  // initialisation de la page
-function init_page() {
-    get_Data();
-}
 
+function init_page() {
+   /* xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+    document.getElementById("today_date").innerHTML= day;*/
+     get_Data();
+
+}
+ 
  // récupération des données
 function get_City_Data() {
     city = document.getElementById("ville").value;

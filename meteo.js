@@ -49,8 +49,7 @@ console.log(meteo);
 var prevision24h = (24 / 3) - 1;
 var prevision48h = (48 / 3) - 1;
 var prevision72h = (72 / 3) - 1;
-var prevision96h = (96 / 3) - 1;
-var prevision120h= (120/ 3)  -1;
+
 var debugID = "debug";
 
  // création de l'url météo
@@ -154,41 +153,33 @@ function create_forecast_IDs(response) {
     var oneDayTemp = Math.round(response.list[prevision24h].main.temp); // 7 = (24h / 3h) - 1
     var twoDaysTemp = Math.round(response.list[prevision48h].main.temp); // 15 = (48h / 3h) - 1
     var threeDaysTemp = Math.round(response.list[prevision72h].main.temp); // 23 = (72h / 3h) - 1
-    var fourDaysTemp = Math.round(response.list[prevision96h].main.temp); // 23 = (96h / 3h) - 1
-    var fiveDaysTemp = Math.round(response.list[prevision120h].main.temp); // 23 = (96h / 3h) - 1
+    
     document.getElementById("oneDayTemp").innerHTML = "Temp&eacute;rature pr&eacute;vue dans 24 heures : " + 
                                                               oneDayTemp + " &#186;C";
     document.getElementById("twoDaysTemp").innerHTML = "Temp&eacute;rature pr&eacute;vue dans 48 heures : " + 
                                                               twoDaysTemp + " &#186;C";
     document.getElementById("threeDaysTemp").innerHTML = "Temp&eacute;rature pr&eacute;vue dans 72 heures : " + 
                                                                 threeDaysTemp + " &#186;C";
-    document.getElementById("fourDaysTemp").innerHTML = "Temp&eacute;rature pr&eacute;vue dans 96 heures : " + 
-                                                                fourDaysTemp + " &#186;C";
-    document.getElementById("fiveDaysTemp").innerHTML = "Temp&eacute;rature pr&eacute;vue dans 120 heures : " + 
-                                                                fiveDaysTemp + " &#186;C";                                                            
+                                           
      // icones du temps sur trois jours
     var oneDayIcon = response.list[prevision24h].weather[0].icon;
     var twoDaysIcon = response.list[prevision48h].weather[0].icon;
     var threeDaysIcon = response.list[prevision72h].weather[0].icon;
-    var fourDaysIcon = response.list[prevision96h].weather[0].icon;
-    var fiveDaysIcon = response.list[prevision120h].weather[0].icon;
+   
     document.getElementById("oneDayIcon").src = openWeatherMapFolder + oneDayIcon + ".png";
     document.getElementById("twoDaysIcon").src = openWeatherMapFolder + twoDaysIcon + ".png";
     document.getElementById("threeDaysIcon").src = openWeatherMapFolder + threeDaysIcon + ".png";
-    document.getElementById("fourDaysIcon").src = openWeatherMapFolder + fourDaysIcon + ".png";
-    document.getElementById("fiveDaysIcon").src = openWeatherMapFolder + fiveDaysIcon + ".png";
+    
      // descriptions de la météo sur 3 jours
     var oneDayDescription = response.list[prevision24h].weather[0].description;
     var twoDaysDescription = response.list[prevision48h].weather[0].description;
     var threeDaysDescription = response.list[prevision72h].weather[0].description;
-    var fourDaysDescription = response.list[prevision96h].weather[0].description;
-    var fiveDaysDescription = response.list[prevision120h].weather[0].description;
+    
     
     document.getElementById("oneDayDescription").innerHTML = oneDayDescription;
     document.getElementById("twoDaysDescription").innerHTML = twoDaysDescription;
     document.getElementById("threeDaysDescription").innerHTML = threeDaysDescription;
-    document.getElementById("fourDaysDescription").innerHTML = fourDaysDescription;
-    document.getElementById("fiveDaysDescription").innerHTML = fiveDaysDescription;
+   
 }
 
  // création de l'ID html du taux d'UV

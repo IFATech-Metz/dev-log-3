@@ -1,15 +1,155 @@
+html {
+    background-image: url(nuage.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
 
-    font-family: verdana;
+p {
+    font-family: 'Bookman Old Style', serif;
+    color: black;
+    font-size: 30px;
+}
+
+.meteo {
+    text-align: center;
+
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 80px;
+
+}
+
+#container_saisie {
+    text-align: center;
+
+}
+
+#bouton_envoyer {
+    padding: 15px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 15px;
+    border: none;
+    margin-top: 15px;
+    transition-property: background-color;
+    transition-duration: 0.5s;
+}
+
+#bouton_envoyer:hover {
+    background-color: rgb(73, 243, 73);
+    cursor: pointer;
+
+}
+
+#nom_ville {
+    text-align: center;
+}
+
+#cityName {
+    font-weight: bold;
+    text-decoration: underline;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+#container_temp {
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+}
+
+#info_sup {
+    display: inline-block;
+}
+
+
+#latitude {
+    margin-top: 15px;
+}
+
+#icon {
+    width: 150px;
+}
+
+.degres {
+    font-size: 3em;
+}
+
+#description {
+    font-size: 1.5em;
+    margin-top: 15px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+
+#url {
+    visibility: hidden;
+}
+
+#forecast_url {
+    visibility: hidden;
+}
+
+#uv_url {
+    visibility: hidden;
+}
+
+.informations1 {
+    font-family: 'Bookman Old Style', serif;
+    ;
     font-size: 20px;
-    color: blue; 
-    display: none;
-
+    box-shadow: 0px 0px 33px 0px rgba(173,157,173,1);
+    padding: 30px;    
 }
 
-#meteo{
-    background: black;
-    color: white;
+.informations2 {
+    font-family: 'Bookman Old Style', serif;
+    ;
+    font-size: 20px;
+    box-shadow: 0px 0px 33px 0px rgba(173,157,173,1);
+    padding: 30px;    
 }
 
+.informations3 {
+    font-family: 'Bookman Old Style', serif;
+    ;
+    font-size: 20px;
+    
+    
+    display:flex;
+    justify-content: space-around;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 30px;
+}
 
+.informations3 img {
+    height: 50px;
+    width: auto; 
+    text-align: center;
+    
+}
+.center {
+    text-align: center;
+}
 
+.previsions{
+    display: flex; 
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.temp{
+    width: 20%;
+}
+
+.prevision1,.prevision2, .prevision3  {
+    text-align: center;
+    box-shadow: 0px 0px 33px 0px rgba(173,157,173,1);
+    padding: 30px;
+}
+
+.temperature {
+    box-shadow: 0px 0px 33px 0px rgba(173,157,173,1);
+    padding: 30px;
+}

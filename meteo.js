@@ -1,6 +1,6 @@
 /*
  * Projet Météo - Groupe DevLog 03
- * Copyright (c) 2019 Anais GUILLAUME, Rouquaya MOUSS, Thiéry SAMPY, LEFEVRE Antony
+ * Copyright (c) 2019 Anais GUILLAUME, Rouquaya MOUSS, Thiéry SAMPY
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -18,7 +18,6 @@
 var xmlDataRequest = new XMLHttpRequest();
 var xmlForecastDataRequest = new XMLHttpRequest();
 var xmlUVDataRequest = new XMLHttpRequest();
-
  // url général
 var base_url = "http://api.openweathermap.org/data/2.5/weather";
  // url des prévisions
@@ -101,7 +100,7 @@ function cityNotFound(status) {
  // création des ID html de la météo
 function create_IDs(response) {
     var temperature = Math.round(response.main.temp);
-    document.getElementById("meteo").innerHTML =  + temperature + "°C";
+    document.getElementById("meteo").innerHTML = "Temp&eacute;rature actuelle : " + temperature + " &#186;C";
 
     var icon = response.weather[0].icon;
     document.getElementById("icon").src = openWeatherMapFolder + icon + ".png";
@@ -152,11 +151,11 @@ function create_forecast_IDs(response) {
     var oneDayTemp = Math.round(response.list[prevision24h].main.temp); // 7 = (24h / 3h) - 1
     var twoDaysTemp = Math.round(response.list[prevision48h].main.temp); // 15 = (48h / 3h) - 1
     var threeDaysTemp = Math.round(response.list[prevision72h].main.temp); // 23 = (72h / 3h) - 1
-    document.getElementById("oneDayTemp").innerHTML = "Température dans 1 jour: " + 
+    document.getElementById("oneDayTemp").innerHTML = "Temp&eacute;rature pr&eacute;vue dans 24 heures : " + 
                                                               oneDayTemp + " &#186;C";
-    document.getElementById("twoDaysTemp").innerHTML = "Température dans 2 jours: " + 
+    document.getElementById("twoDaysTemp").innerHTML = "Temp&eacute;rature pr&eacute;vue dans 48 heures : " + 
                                                               twoDaysTemp + " &#186;C";
-    document.getElementById("threeDaysTemp").innerHTML = "Température dans 3 jours : " + 
+    document.getElementById("threeDaysTemp").innerHTML = "Temp&eacute;rature pr&eacute;vue dans 72 heures : " + 
                                                                 threeDaysTemp + " &#186;C";
 
      // icones du temps sur trois jours

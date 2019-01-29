@@ -18,8 +18,8 @@
 var xmlDataRequest = new XMLHttpRequest();
 var xmlForecastDataRequest = new XMLHttpRequest();
 var xmlUVDataRequest = new XMLHttpRequest();
-//url avec pay et id pays
-var city_codeName="http://api.openweathermap.org/data/2.5/weather?q";
+// url pour carte 
+ var web_map="http://maps.openweathermap.org/maps/2.0/weather/";
  // url général
 var base_url = "http://api.openweathermap.org/data/2.5/weather";
  // url des prévisions
@@ -29,14 +29,8 @@ var uv_url = "http://api.openweathermap.org/data/2.5/uvi";
  // url des icônes météorologiques
 var openWeatherMapFolder = "http://openweathermap.org/img/w/";
 
-/*var current_date = new date();
-var year = current_date.getFullYear();
-var Month= current_date.getMonth()+1;
-var day = current_date.getDate();
-var day= day+"/"+month+"/"+year;*/
-var country="France";
-var city ="Metz" ;
-var appid ="a2dc86b24fafbb885f09aaec75f00c65";
+var city = "Metz";
+var appid = "a2dc86b24fafbb885f09aaec75f00c65";
 //3c084bd74c2f77f02d6d6c30c2018bf0
 //f5e810531af1756846022c6f387acf25
 //348e43383864ecfba8b0827cc402f3ff
@@ -50,12 +44,13 @@ var longitude = 6.18;
 
 var previousCity = city;
 var ville;
-
+console.log(meteo);
  // calcul des index pour les previsions, sur une base d'un releve toutes les 3 heures
 var prevision24h = (24 / 3) - 1;
 var prevision48h = (48 / 3) - 1;
 var prevision72h = (72 / 3) - 1;
-
+var prevision96h = (96 / 3) - 1;
+var prevision120h= (120/ 3)  -1;
 var debugID = "debug";
 
  // création de l'url météo
@@ -122,16 +117,35 @@ function create_IDs(response) {
     document.getElementById("description").innerHTML = description;
 
     var humidite = response.main.humidity;
-    document.getElementById("humidite").innerHTML = "Humidit&eacute; : "+ humidite + " %";
+    document.getElementById("humidite").innerHTML = "Taux d'humidit&eacute; : "+ humidite + " %";
 
     var pression = response.main.pressure;
-    document.getElementById("pression").innerHTML = "Pression : " + pression + " hPa";
+    document.getElementById("pression").innerHTML = "Pression atmosph&eacute;rique: " + pression + " hPa";
 
     var windDirection = response.wind.deg;
     document.getElementById("windDirection").innerHTML = "Direction du vent : " + windDirectionToString(windDirection);
     
     var windSpeed = Math.round(response.wind.speed * 3.6); // *3.6 pour passer de m/s en km/h
     document.getElementById("windSpeed").innerHTML = "Vitesse du vent : " + windSpeed + " km/h";
+
+    var cloudPercent = response.clouds.all;
+    document.getElementById("cloudPercent").innerHTML = "Couverture nuageuse : " + cloudPercent + " %";
+
+     // Heure de lever du soleil, au format Unix-Time, converti en millisecondes
+    var formattedTime;
+    var unixTime = new Date(response.sys.sunrise*1000);
+    var hours = unixTime.getHours();
+    var minutes = "0" + unixTime.getMinutes();
+    var seconds = "0" + unixTime.getSeconds();
+    formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    document.getElementById("sunrise").innerHTML = "Heure de lever du soleil : " + formattedTime;
+
+    var unixTime = new Date(response.sys.sunset*1000);
+    var hours = unixTime.getHours();
+    var minutes = "0" + unixTime.getMinutes();
+    var seconds = "0" + unixTime.getSeconds();
+    formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    document.getElementById("sunset").innerHTML = "Heure de coucher du soleil : " + formattedTime;
 }
 
  // création des ID html des prévisions sur 3 jours
@@ -140,28 +154,41 @@ function create_forecast_IDs(response) {
     var oneDayTemp = Math.round(response.list[prevision24h].main.temp); // 7 = (24h / 3h) - 1
     var twoDaysTemp = Math.round(response.list[prevision48h].main.temp); // 15 = (48h / 3h) - 1
     var threeDaysTemp = Math.round(response.list[prevision72h].main.temp); // 23 = (72h / 3h) - 1
+    var fourDaysTemp = Math.round(response.list[prevision96h].main.temp); // 23 = (96h / 3h) - 1
+    var fiveDaysTemp = Math.round(response.list[prevision120h].main.temp); // 23 = (96h / 3h) - 1
     document.getElementById("oneDayTemp").innerHTML = "Temp&eacute;rature pr&eacute;vue dans 24 heures : " + 
                                                               oneDayTemp + " &#186;C";
     document.getElementById("twoDaysTemp").innerHTML = "Temp&eacute;rature pr&eacute;vue dans 48 heures : " + 
                                                               twoDaysTemp + " &#186;C";
     document.getElementById("threeDaysTemp").innerHTML = "Temp&eacute;rature pr&eacute;vue dans 72 heures : " + 
                                                                 threeDaysTemp + " &#186;C";
-
+    document.getElementById("fourDaysTemp").innerHTML = "Temp&eacute;rature pr&eacute;vue dans 96 heures : " + 
+                                                                fourDaysTemp + " &#186;C";
+    document.getElementById("fiveDaysTemp").innerHTML = "Temp&eacute;rature pr&eacute;vue dans 120 heures : " + 
+                                                                fiveDaysTemp + " &#186;C";                                                            
      // icones du temps sur trois jours
     var oneDayIcon = response.list[prevision24h].weather[0].icon;
     var twoDaysIcon = response.list[prevision48h].weather[0].icon;
     var threeDaysIcon = response.list[prevision72h].weather[0].icon;
+    var fourDaysIcon = response.list[prevision96h].weather[0].icon;
+    var fiveDaysIcon = response.list[prevision120h].weather[0].icon;
     document.getElementById("oneDayIcon").src = openWeatherMapFolder + oneDayIcon + ".png";
     document.getElementById("twoDaysIcon").src = openWeatherMapFolder + twoDaysIcon + ".png";
     document.getElementById("threeDaysIcon").src = openWeatherMapFolder + threeDaysIcon + ".png";
-
+    document.getElementById("fourDaysIcon").src = openWeatherMapFolder + fourDaysIcon + ".png";
+    document.getElementById("fiveDaysIcon").src = openWeatherMapFolder + fiveDaysIcon + ".png";
      // descriptions de la météo sur 3 jours
     var oneDayDescription = response.list[prevision24h].weather[0].description;
     var twoDaysDescription = response.list[prevision48h].weather[0].description;
     var threeDaysDescription = response.list[prevision72h].weather[0].description;
+    var fourDaysDescription = response.list[prevision96h].weather[0].description;
+    var fiveDaysDescription = response.list[prevision120h].weather[0].description;
+    
     document.getElementById("oneDayDescription").innerHTML = oneDayDescription;
     document.getElementById("twoDaysDescription").innerHTML = twoDaysDescription;
     document.getElementById("threeDaysDescription").innerHTML = threeDaysDescription;
+    document.getElementById("fourDaysDescription").innerHTML = fourDaysDescription;
+    document.getElementById("fiveDaysDescription").innerHTML = fiveDaysDescription;
 }
 
  // création de l'ID html du taux d'UV
@@ -257,15 +284,10 @@ function get_Data() {
 }
 
  // initialisation de la page
-
 function init_page() {
-   /* xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-    document.getElementById("today_date").innerHTML= day;*/
-     get_Data();
-
+    get_Data();
 }
- 
+
  // récupération des données
 function get_City_Data() {
     city = document.getElementById("ville").value;

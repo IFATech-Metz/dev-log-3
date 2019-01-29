@@ -1,11 +1,11 @@
 <html>
     <head>
-        <title>M&eacute;t&eacute;o du jour</title>
+        <title>Météo Time </title>
         <script src="meteo.js"></script>
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body onload="init_page()">
-        <h1>Application M&eacute;t&eacute;o</h1>
+        <h1>Météo Time</h1>
         <p>
             Nom de la ville :
             <input type="text" id="ville" value="">
@@ -18,7 +18,7 @@
         </div>
 
         <p>
-            Pr&eacute;visions pour la ville de <span id="cityName"></span>
+            Prévisions pour la ville de <span id="cityName"></span>
         </p>
         <div id="url">
             <br>
@@ -96,6 +96,32 @@
                 </td>
                 <td>
                     <span id="threeDaysDescription"></span>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <span id="fourDaysTemp"></span>
+                </td>
+                <td>
+                    <img id="fourDaysIcon" src="">
+                </td>
+                <td>
+                    <span id="fourDaysDescription"></span>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <span id="fiveDaysTemp"></span>
+                </td>
+                <td>
+                    <img id="fiveDaysIcon" src="">
+                </td>
+                <td>
+                    <span id="fiveDaysDescription"></span>
                 </td>
             </tr>
         </table>

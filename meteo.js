@@ -19,7 +19,7 @@ var xmlDataRequest = new XMLHttpRequest();
 var xmlForecastDataRequest = new XMLHttpRequest();
 var xmlUVDataRequest = new XMLHttpRequest();
 // url pour carte 
- var web_map="http://maps.openweathermap.org/maps/2.0/weather/";
+ /*var web_map="http://maps.openweathermap.org/maps/2.0/weather/";*/
  // url général
 var base_url = "http://api.openweathermap.org/data/2.5/weather";
  // url des prévisions

@@ -1,104 +1,110 @@
 <html>
     <head>
+    <title>M&eacute;t&eacute;o du jour</title>
+    <script src="meteo.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="UTF-8">
+</head>
 
-        <title>Météo Time </title>
+<body class="content" onload="init_page()">
+    <h1 class="meteo">Météo time</h1>
+    <p id="container_saisie">
+        Nom de la ville :
+        <input type="text" id="ville" value="">
+        <br>
+        <button title="Cliquez moi dessus !" onclick="get_City_Data()" id="bouton_envoyer">Envoyer</button>
+        <input type="checkbox" id="url_visibility" style="display: none">
+    </p>
 
-        <script src="meteo.js"></script>
-        <link rel="stylesheet" type="text/css" href="style.css">
-    </head>
-    <body class="content" onload="init_page()">
-        <h1>Application M&eacute;t&eacute;o</h1>
+    <div id="debug">
+    </div>
 
-        <p>
-            Nom de la ville :
-            <input type="text" id="ville" value="">
-            <br>
-            <button title="button" onclick="get_City_Data()">Envoyer</button>
-            <input type="checkbox" id="url_visibility" checked>
-        </p>
+    <p id="nom_ville">
+        Prévisions pour la ville de <span id="cityName"></span>
+    </p>
+
+    <div id="url">
+        <br>
+    </div>
+    <div id="forecast_url">
+        <br>
+    </div>
+    <div id="uv_url">
+        <br>
+    </div>
+
+    <br>
+
+    <div id="container_temp">
+
+        <div class="informations1">
+            <div id="description"></div>
+            <div id="pression"></div>
+            <div id="humidite"></div>
+            <div id="cloudPercent"></div>
+        </div>
+
+
+        <div class="temperature">
+            <!-- réunir informations 2 et informations 3-->
+
+            <div class="degres" id="meteo"></div>
+            <img class="iconmeteo" id="icon" src="">
+            
+        </div>
+
+
+
+        <div class="informations2">
+            <div id="latitude"></div>
+            <div id="longitude"></div>
+            <div id="windDirection"></div>
+            <div id="windSpeed"></div>
+            <div id="uv"></div>
+        </div>
+
+
+    </div>
+
+    <div class="informations3">
+        <div class="center">
+        <div id="sunset"></div>
+        <img id="imgsunset" src="sunset.png">
+        </div>
+                        
         
-        <div id="debug">            
+        <div class="center">
+        <div id="sunrise"></div>
+        <img id="imgsunrise" src="sunrise.png">
+            </div>
+        
+    </div>
+
+    <div class="previsions">
+
+        <div class="prevision1">
+            <span id="oneDayTemp"></span><br/>
+
+            <img id="oneDayIcon" src=""><br/>
+
+            <span id="oneDayDescription"></span>
+
         </div>
-      
-        <p>
-            Pr&eacute;visions pour la ville de <span id="cityName"></span>
-        </p>
-        <div id="url">
-            <br>
+        <div class="prevision2">
+            <span id="twoDaysTemp"></span><br/>
+
+            <img id="twoDaysIcon" src=""><br/>
+
+            <span id="twoDaysDescription"></span>
+
         </div>
-        <div id="forecast_url">
-            <br>
+        <div class="prevision3">
+            <span id="threeDaysTemp"></span><br/>
+
+            <img id="threeDaysIcon" src=""><br/>
+
+            <span id="threeDaysDescription"></span>
         </div>
-
-        <div id="uv_url">
-            <br>
-        </div>
-
-        <br>
-        <table>
-            <tr>
-                <td>
-                    <span id="meteo"></span>
-                </td>
-                <td>
-                    <img id="icon" src="">
-                </td>
-                <td>
-                    <span id="description"></span>
-                </td>
-            </tr>
-        </table>
-        <div id="description"></div>
-
-        <div id="pression"></div>
-        <div id="humidite"></div>
-
-        <div id="latitude"></div>
-        <div id="longitude"></div>
-
-        <div id="windDirection"></div>
-        <div id="windSpeed"></div>
-        <div id="uv"></div>
-        <br>
-        <table>
-            <tr>
-                <td>
-                    <span id="oneDayTemp"></span>
-                </td>
-                <td>
-                    <img id="oneDayIcon" src="">
-                </td>
-                <td>
-                    <span id="oneDayDescription"></span>
-                </td>
-            </tr>
-        </table>
-        <table>
-            <tr>
-                <td>
-                    <span id="twoDaysTemp"></span>
-                </td>
-                <td>
-                    <img id="twoDaysIcon" src="">
-                </td>
-                <td>
-                    <span id="twoDaysDescription"></span>
-                </td>
-            </tr>
-        </table>
-        <table>
-            <tr>
-                <td>
-                    <span id="threeDaysTemp"></span>
-                </td>
-                <td>
-                    <img id="threeDaysIcon" src="">
-                </td>
-                <td>
-                    <span id="threeDaysDescription"></span>
-                </td>
-            </tr>
-        </table>
-
-    </body>
+    </div>
+</body>
 </html>

@@ -95,6 +95,7 @@ function cityNotFound(status) {
          // une erreur est survenue lors de la connexion au serveur
         document.getElementById(debugID).style.display = "block";
         document.getElementById(debugID).innerHTML = "Erreur de connexion au serveur : erreur " + status;
+        alert("ville n'existe pas");
     }
 }
 
@@ -220,6 +221,7 @@ function get_forecast_Data() {
         else {
              // cas où la ville n'est pas trouvée
             cityNotFound(this.status);
+           
         }
     };
 
@@ -276,7 +278,7 @@ function init_page() {
  // récupération des données
 function get_City_Data() {
     city = document.getElementById("ville").value;
-
+  
      // test pour vérifier qu'un nom de ville a bien été entré en paramètres
     if (city == "") {
          // aucun nom de ville, on utilise le dernier nom de ville utilise
@@ -284,7 +286,5 @@ function get_City_Data() {
     }
     else {
         previousCity = city;
-    }
-
-    get_Data();
+    }get_Data();
 }
